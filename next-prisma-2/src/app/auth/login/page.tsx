@@ -7,11 +7,12 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 
 const page = () => {
   return (
-    <div className="w-full h-screen flex items-center justify-center px-6">
+    <div className="w-full flex items-center min-h-[calc(100vh-5rem)] justify-center px-6">
       <div className="w-full max-w-md">
         <h1 className="text-4xl text-center mb-12">Login</h1>
         <FieldSet>
@@ -28,6 +29,9 @@ const page = () => {
         </FieldSet>
         <div className="mt-4 flex justify-center">
           <Button variant="outline">Login</Button>
+          <Link href="/">
+            <Button className="ml-2" variant="outline">Go Back</Button>
+          </Link>
         </div>
       </div>
     </div>

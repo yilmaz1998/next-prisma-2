@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import "./globals.css";
 import { ThemeProvider } from "next-themes"
+import Header from "@/components/Header";
 
 
 const Layout = ({ children }: { children: ReactNode }) => {
@@ -8,12 +9,15 @@ const Layout = ({ children }: { children: ReactNode }) => {
     <html lang="en" suppressHydrationWarning>
       <head>
       </head>
-        <body>
+      <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
-        </ThemeProvider>
-        </body>
-    </html>
+          <Header/> 
+          <main className="pt-20">
+            {children}
+          </main>
+      </ThemeProvider>
+    </body>
+    </html >
   )
 }
 
