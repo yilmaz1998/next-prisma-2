@@ -33,7 +33,7 @@ const handler = NextAuth({
                     throw new Error("Invalid password")
                 }
 
-                return { id: user.id, username: user.username }
+                return { id: user.id, name: user.username }
             },
         }),
     ],
