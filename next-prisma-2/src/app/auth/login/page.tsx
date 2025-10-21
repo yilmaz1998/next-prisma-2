@@ -3,6 +3,7 @@
 import {
   Field,
   FieldGroup,
+  FieldDescription,
   FieldLabel,
   FieldSet,
 } from "@/components/ui/field"
@@ -41,12 +42,18 @@ const page = () => {
             </Field>
           </FieldGroup>
         </FieldSet>
-        <div className="mt-4 flex justify-center">
+        <div className="mt-4 flex justify-center mb-4">
           <Button onClick={handleLogin} variant="outline">Login</Button>
           <Link href="/">
             <Button className="ml-2" variant="outline">Go Back</Button>
           </Link>
         </div>
+        <FieldDescription className="flex justify-center">
+          Don't have an account?{" "}
+          <Link href="/auth/register" className="ml-1 underline">
+            Register here
+          </Link>
+        </FieldDescription>
       </div>
     </div>
   )
