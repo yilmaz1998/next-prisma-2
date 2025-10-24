@@ -16,9 +16,9 @@ const handler = NextAuth({
                     throw new Error("Missing username or password")
                 }
 
-                const user = await prisma.user.findUnique({
-                    where: { username: credentials.username },
-                })
+                const user = await prisma.user.findFirst({
+                    where: { username: credentials.username }
+                  });
 
                 if (!user) {
                     throw new Error("User not found")
