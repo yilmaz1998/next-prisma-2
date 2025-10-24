@@ -20,3 +20,10 @@ model User {
   password String
   createdAt DateTime @default(now())
 }
+
+model Cocktail {
+  id String @id @default(cuid())
+  name String
+  imageUrl String
+  ingredients String
+}
