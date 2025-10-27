@@ -2,26 +2,37 @@
 
 import { Cocktail } from "@/types/types"
 import { useState, useEffect } from "react"
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 
 const Page = () => {
   const [cocktails, setCocktails] = useState<Cocktail[]>([])
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
 
-  useEffect(() => {
     const fetchCocktails = async () => {
       try {
-        const response = await fetch("/api/cocktail")
+        const response = await fetch(`/api/cocktail?page=${page}&pageSize=20`)
         const data = await response.json()
-        setCocktails(data)
+        setCocktails(prev => [...prev, ...data])
+        if (data.length < 20) setHasMore(false)
+        setPage(prev => prev + 1)
       } catch (error) {
         throw new Error("Failed to fetch cocktails")
       }
     }
 
+  useEffect(() => {
     fetchCocktails()
   }, [])
 
   return (
+    <InfiniteScroll
+    dataLength={cocktails.length}
+    next={fetchCocktails}
+    hasMore={hasMore}
+    loader={<h4>Loading...</h4>}
+  >
     <div>
       {cocktails.map((cocktail) => (
         <div key={cocktail.id}>
@@ -37,6 +48,7 @@ const Page = () => {
         </div>
       ))}
     </div>
+  </InfiniteScroll> 
   )
 }
 

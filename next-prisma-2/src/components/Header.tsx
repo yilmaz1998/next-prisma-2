@@ -14,7 +14,7 @@ const Header = () => {
   const username = session?.user?.name
 
   return (
-    <div className="w-full px-4 py-4 fixed flex items-center justify-between">
+    <div className="w-full px-4 py-4 fixed flex items-center bg-white dark:bg-black z-50 justify-between">
       <div className="flex items-center">
         <BiSolidDrink className="ml-1 text-2xl" />
         <Link href={"/"}>
