@@ -3,7 +3,16 @@
 import { Cocktail } from "@/types/types"
 import { useState, useEffect } from "react"
 import InfiniteScroll from 'react-infinite-scroll-component'
-
+import { Spinner } from "@/components/ui/spinner"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  CardFooter
+} from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 
 const Page = () => {
   const [cocktails, setCocktails] = useState<Cocktail[]>([])
@@ -31,23 +40,40 @@ const Page = () => {
     dataLength={cocktails.length}
     next={fetchCocktails}
     hasMore={hasMore}
-    loader={<h4>Loading...</h4>}
+    loader={<div className="w-full flex justify-center py-4">
+    <Spinner />
+  </div>}
   >
-    <div>
-      {cocktails.map((cocktail) => (
-        <div key={cocktail.id}>
-          <h2>{cocktail.name}</h2>
-          {cocktail.imageUrl && (
-            <img
-              src={cocktail.imageUrl}
-              alt={cocktail.name}
-              className="w-48 h-48 object-cover"
-            />
-          )}
-          <p>{cocktail.ingredients}</p>
-        </div>
-      ))}
-    </div>
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center py-6">
+  {cocktails.map((cocktail) => (
+    <Card
+      key={cocktail.id}
+      className="w-full max-w-md mx-auto">
+
+      <CardHeader>
+        <CardTitle>{cocktail.name}</CardTitle>
+      </CardHeader>
+
+      <CardContent className="flex flex-2 flex-col items-center gap-4">
+        {cocktail.imageUrl && (
+          <img
+            src={cocktail.imageUrl}
+            alt={cocktail.name}
+            className="w-64 h-64 object-cover rounded-md"
+          />
+        )}
+        <CardDescription>Ingredients</CardDescription>
+        <p className="text-center">{cocktail.ingredients}</p>
+      </CardContent>
+
+      <CardFooter>
+        <Button variant="secondary" className="w-full">
+          Add Favorite
+        </Button>
+      </CardFooter>
+    </Card>
+  ))}
+</div>
   </InfiniteScroll> 
   )
 }
