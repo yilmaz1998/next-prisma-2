@@ -6,12 +6,20 @@ import { Moon, Sun } from "lucide-react";
 import { BiSolidDrink } from "react-icons/bi";
 import Link from "next/link"
 import { useSession, signOut } from "next-auth/react";
+import { Input } from "@/components/ui/input"
+import { useContext } from "react";
+import { SearchContext } from "@/SearchContext";
 
 
 const Header = () => {
   const { theme, setTheme } = useTheme()
   const { data: session } = useSession()
   const username = session?.user?.name
+  const context = useContext(SearchContext);
+  if (!context) {
+    throw new Error("useSearch must be used within a SearchProvider");
+  }  
+  const { searchQuery, setSearchQuery } = context;
 
   return (
     <div className="w-full px-4 py-4 fixed flex items-center bg-white dark:bg-black z-50 justify-between">
@@ -21,6 +29,9 @@ const Header = () => {
         <h1 className="text-2xl">Sipster</h1>
         </Link>
       </div>
+
+      <Input type="text" placeholder="Search..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+      
       <Button
         variant="outline"
         onClick={() => setTheme(theme === "light" ? "dark" : "light")}

@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "next-themes"
 import Header from "@/components/Header";
 import { SessionProvider } from "next-auth/react";
+import { SearchProvider } from "@/SearchContext";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
@@ -13,10 +14,12 @@ const Layout = ({ children }: { children: ReactNode }) => {
       <body>
         <SessionProvider>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Header/> 
-          <main className="pt-20">
+          <SearchProvider>
+        <Header />          
+        <main className="pt-20">
             {children}
           </main>
+          </SearchProvider>
       </ThemeProvider>
       </SessionProvider>
     </body>

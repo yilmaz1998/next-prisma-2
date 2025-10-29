@@ -10,3 +10,8 @@ export interface Cocktail {
     imageUrl: string;
     ingredients: string;
 }
+
+export interface SearchContextProps {
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+}
