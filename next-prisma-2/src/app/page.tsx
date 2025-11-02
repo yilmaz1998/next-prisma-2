@@ -25,37 +25,32 @@ const Page = () => {
   }  
   const { searchQuery } = context;
 
-    const fetchCocktails = async (page = 1, query = "") => {
-      try {
-        const response = await fetch(`/api/cocktail?page=${page}&pageSize=20&search=${query}`)
-        const data = await response.json()
-        if (page === 1) {
-          setCocktails(data)
-        } else {
-          setCocktails(prev => [...prev, ...data])
-        }        
-        if (data.length < 20) setHasMore(false)
-        setPage(prev => prev + 1)
-      } catch (error) {
-        throw new Error("Failed to fetch cocktails")
+  const fetchCocktails = async (pageNumber: number, query: string, reset = false) => {
+    try {
+      const url = query ? 
+      `/api/cocktail?search=${query}&page=${pageNumber}` : `/api/cocktail?page=${pageNumber}`;
+
+      const res = await fetch(url);
+      const data = await res.json();
+  
+      if (reset) {
+        setCocktails(data);
+        setPage(2);
+      } else {
+        setCocktails(prev => [...prev, ...data]);
+        setPage(pageNumber + 1);
       }
+      setHasMore(data.length === 20);
+    } catch (error) {
+      console.error(error);
     }
+  };
+  
+  useEffect(() => {
+    fetchCocktails(1, searchQuery, true);
+  }, [searchQuery]);
 
-    useEffect(() => {
-      setCocktails([])
-      setPage(1)
-      setHasMore(true)
-      fetchCocktails(1, searchQuery)
-    }, [searchQuery])
-
-  const filteredCocktails = cocktails.filter(cocktail => {
-    if (!searchQuery) return true
-    const query = searchQuery.toLowerCase()
-    return (
-      cocktail.name.toLowerCase().includes(query) ||
-      cocktail.ingredients.toLowerCase().includes(query)
-    )
-  })
+  const filteredCocktails = cocktails;
 
   return (
     <InfiniteScroll
