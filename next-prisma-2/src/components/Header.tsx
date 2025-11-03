@@ -64,8 +64,8 @@ const Header = () => {
           {username ? (
             <>
               <span className="mt-4 light:text-black ">Hello, {username}</span>
-              <Link href={"/favorites"}>My Favorites</Link>
-              <Button className="mt-2" onClick={() => signOut()}>Logout</Button>
+              <Link onClick={() => setSideBarOpen(false)} href={"/favorites"}>My Favorites</Link>
+              <Button className="mt-2"   onClick={() => signOut({ callbackUrl: "/" })}>Logout</Button>
             </>
           ) : (
             <Link href="/auth/login">

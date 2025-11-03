@@ -15,10 +15,11 @@ datasource db {
 }
 
 model User {
-  id String @default(cuid())
+  id String @id @default(cuid())
   username String @unique
   password String
   createdAt DateTime @default(now())
+  favorites Favorite[]
 }
 
 model Cocktail {
@@ -26,4 +27,14 @@ model Cocktail {
   name String
   imageUrl String
   ingredients String
+  favorites   Favorite[]
+}
+
+model Favorite {
+  id         String   @id @default(cuid())
+  cocktail   Cocktail @relation(fields: [cocktailId], references: [id])
+  cocktailId String
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  createdAt  DateTime @default(now())
 }

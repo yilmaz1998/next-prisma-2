@@ -52,6 +52,24 @@ const Page = () => {
 
   const filteredCocktails = cocktails;
 
+  const handleFavorite = async (cocktailId: string) => {
+    try {
+      const res = await fetch('/api/favorites', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ cocktailId }),
+      });
+  
+      if (!res.ok) {
+        throw new Error('Failed to add favorite');
+      }
+      } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <InfiniteScroll
     dataLength={cocktails.length}
@@ -82,7 +100,7 @@ const Page = () => {
       </CardContent>
 
       <CardFooter>
-        <Button variant="secondary" className="w-full">
+        <Button variant="secondary" onClick={() => handleFavorite(cocktail.id)} className="w-full">
           Add Favorite
         </Button>
       </CardFooter>
