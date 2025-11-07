@@ -14,9 +14,13 @@ import {
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { SearchContext } from "@/SearchContext"
+import { toast } from "sonner"
+import { useSession } from "next-auth/react";
 
 const Page = () => {
   const [cocktails, setCocktails] = useState<Cocktail[]>([])
+  const [favorites, setFavorites] = useState<string[]>([])
+  const { data: session } = useSession();
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
   const context = useContext(SearchContext);
@@ -50,6 +54,23 @@ const Page = () => {
     fetchCocktails(1, searchQuery, true);
   }, [searchQuery]);
 
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const res = await fetch("/api/favorites");
+        const data = await res.json();
+  
+        setFavorites(data.map((fav: { cocktail: { id: string } }) => fav.cocktail.id));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    if (session?.user) {
+      fetchFavorites();
+    }
+  }, [session]);
+  
+
   const filteredCocktails = cocktails;
 
   const handleFavorite = async (cocktailId: string) => {
@@ -61,10 +82,13 @@ const Page = () => {
         },
         body: JSON.stringify({ cocktailId }),
       });
-  
+
       if (!res.ok) {
-        throw new Error('Failed to add favorite');
+        toast.warning('Error')
+        return
       }
+      toast.success("Added to favorites!")
+      setFavorites(prev => [...prev, cocktailId])
       } catch (error) {
       console.error(error);
     }
@@ -100,9 +124,14 @@ const Page = () => {
       </CardContent>
 
       <CardFooter>
-        <Button variant="secondary" onClick={() => handleFavorite(cocktail.id)} className="w-full">
-          Add Favorite
-        </Button>
+      <Button
+      variant="secondary"
+      onClick={() => handleFavorite(cocktail.id)}
+      className="w-full"
+      disabled={favorites.includes(cocktail.id)}
+      >
+      {favorites.includes(cocktail.id) ? "Added" : "Add Favorite"}
+     </Button>
       </CardFooter>
     </Card>
   ))}

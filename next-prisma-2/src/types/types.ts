@@ -15,3 +15,8 @@ export interface SearchContextProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
 }
+
+export interface Favorite {
+  id: string;
+  cocktail: Cocktail;
+}

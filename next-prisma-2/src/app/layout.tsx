@@ -5,6 +5,7 @@ import { ThemeProvider } from "next-themes"
 import Header from "@/components/Header";
 import { SessionProvider } from "next-auth/react";
 import { SearchProvider } from "@/SearchContext";
+import { Toaster } from "@/components/ui/sonner"
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
@@ -19,6 +20,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
         <main className="pt-20">
             {children}
           </main>
+          <Toaster />
           </SearchProvider>
       </ThemeProvider>
       </SessionProvider>
