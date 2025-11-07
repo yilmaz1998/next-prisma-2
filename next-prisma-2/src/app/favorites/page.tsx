@@ -51,6 +51,24 @@ const page = () => {
     fetchFavorites()
   }, [])
 
+  const handleRemove = async (cocktailId: string) => {
+    try {
+      const response = await fetch(`/api/favorites/${cocktailId}`, {
+        method: 'DELETE',
+      });
+  
+      if (!response.ok) {
+        const error = await response.json();
+        console.error('Delete failed:', error);
+        return;
+      }
+  
+      setFavorites(prev => prev.filter(fav => fav.cocktail.id !== cocktailId));
+    } catch (error) {
+      console.error('Error removing favorite:', error);
+    }
+  }
+
   const filteredFavorites = favorites.filter(favorite =>
     favorite.cocktail.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -87,7 +105,7 @@ const page = () => {
           </CardContent>
 
           <CardFooter>
-            <Button className="w-full" variant='secondary'>Remove</Button>
+            <Button onClick={() => handleRemove(fav.cocktail.id)} className="w-full" variant='secondary'>Remove</Button>
           </CardFooter>
         </Card>
       ))}
